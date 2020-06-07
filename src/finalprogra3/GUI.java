@@ -4,18 +4,22 @@
  * and open the template in the editor.
  */
 package finalprogra3;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author Estuardo
  */
 public class GUI extends javax.swing.JFrame {
-    
+
     Logica logica = new Logica();
+    String codigo;
+    Producto producto;
 
     /**
      * Creates new form GUI
@@ -34,7 +38,6 @@ public class GUI extends javax.swing.JFrame {
     private void initComponents() {
 
         btnAgregar = new javax.swing.JButton();
-        btnMostrar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtInventario = new javax.swing.JTextArea();
         txtCodigo = new javax.swing.JTextField();
@@ -61,13 +64,6 @@ public class GUI extends javax.swing.JFrame {
             }
         });
 
-        btnMostrar.setText("Mostrar");
-        btnMostrar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnMostrarActionPerformed(evt);
-            }
-        });
-
         txtInventario.setColumns(20);
         txtInventario.setRows(5);
         jScrollPane1.setViewportView(txtInventario);
@@ -78,21 +74,9 @@ public class GUI extends javax.swing.JFrame {
 
         jLabel3.setText("TIPO DE PRODUCTO");
 
-        txtTipoProd.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtTipoProdActionPerformed(evt);
-            }
-        });
-
         jLabel4.setText("PRECIO");
 
         jLabel5.setText("FABRICANTE");
-
-        txtFabricante.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtFabricanteActionPerformed(evt);
-            }
-        });
 
         jLabel6.setText("EXISTENCIAS");
 
@@ -127,8 +111,6 @@ public class GUI extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(65, 65, 65)
                 .addComponent(btnAgregar)
-                .addGap(26, 26, 26)
-                .addComponent(btnMostrar)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -166,51 +148,74 @@ public class GUI extends javax.swing.JFrame {
                             .addComponent(jLabel7)))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(35, 35, 35)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnAgregar)
-                    .addComponent(btnMostrar))
+                .addComponent(btnAgregar)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    //BOTON AGREGAR
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         // TODO add your handling code here:
-        String codigo = txtCodigo.getText();
-        int existencias = Integer.parseInt(txtExistencias.getText());
-        String nombreProducto = txtProducto.getText();
-        String tipoProd = txtTipoProd.getText();
-        String fabricante = txtFabricante.getText();
-        String fechaIngreso = txtFechaIngreso.getText();
-        Double precio = Double.parseDouble(txtPrecio.getText());
-        Producto producto = new Producto(existencias,nombreProducto,tipoProd,fabricante,fechaIngreso,precio);
-        logica.agregarProducto(codigo, producto, logica.listaProductos);
+        try {
+            asignarValores();
+            logica.agregarProducto(codigo, producto, logica.listaProductos);
+            mostrarInventario();
+            clean();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error");
+        }
     }//GEN-LAST:event_btnAgregarActionPerformed
 
-    private void btnMostrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMostrarActionPerformed
-        // TODO add your handling code here:
-        String clave;
-        Iterator<String> productos = logica.listaProductos.keySet().iterator();
-        txtInventario.setText("");
-        while (productos.hasNext()) {
-            clave = productos.next();
-            String nombreProducto = logica.listaProductos.get(clave).getProducto();
-            String tipoProd = logica.listaProductos.get(clave).getTipoProducto();
-            txtInventario.append("Codigo: "+clave+ " Nombre: "+nombreProducto+ " Tipo: "+tipoProd);
-            txtInventario.append(System.getProperty("line.separator")); 
+    private void clean() {
+        try {
+            txtCodigo.setText("");
+            txtExistencias.setText("");
+            txtProducto.setText("");
+            txtTipoProd.setText("");
+            txtFabricante.setText("");
+            txtFechaIngreso.setText("");
+            txtPrecio.setText("");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error");
         }
-    }//GEN-LAST:event_btnMostrarActionPerformed
+    }
 
-    private void txtTipoProdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTipoProdActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtTipoProdActionPerformed
+    private void mostrarInventario() {
+        try {
+            String clave;
+            Iterator<String> productos = logica.listaProductos.keySet().iterator();
+            txtInventario.setText("");
+            while (productos.hasNext()) {
+                clave = productos.next();
+                String nombreProducto = logica.listaProductos.get(clave).getProducto();
+                String tipoProd = logica.listaProductos.get(clave).getTipoProducto();
+                txtInventario.append(clave + " - " + nombreProducto + " - " + tipoProd);
+                txtInventario.append(System.getProperty("line.separator"));
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error");
+        }
+    }
 
-    private void txtFabricanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFabricanteActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtFabricanteActionPerformed
+    public void asignarValores() {
+        try {
+            codigo = txtCodigo.getText();
+            int existencias = Integer.parseInt(txtExistencias.getText());
+            String nombreProducto = txtProducto.getText();
+            String tipoProd = txtTipoProd.getText();
+            String fabricante = txtFabricante.getText();
+            String fechaIngreso = txtFechaIngreso.getText();
+            Double precio = Double.parseDouble(txtPrecio.getText());
+            producto = new Producto(existencias, nombreProducto, tipoProd, fabricante, fechaIngreso, precio);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error");
+        }
+    }
 
     /**
+     *
      * @param args the command line arguments
      */
     public static void main(String args[]) {
@@ -247,7 +252,6 @@ public class GUI extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
-    private javax.swing.JButton btnMostrar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
