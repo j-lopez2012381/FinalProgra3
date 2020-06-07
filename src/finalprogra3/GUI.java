@@ -5,10 +5,8 @@
  */
 package finalprogra3;
 
-import java.util.HashMap;
+
 import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
 import javax.swing.JOptionPane;
 
 /**
@@ -16,7 +14,8 @@ import javax.swing.JOptionPane;
  * @author Estuardo
  */
 public class GUI extends javax.swing.JFrame {
-
+    
+    //Se crea el objeto de la clase Logica, el cual proporciona las funciones principales
     Logica logica = new Logica();
     String codigo;
     Producto producto;
@@ -65,6 +64,7 @@ public class GUI extends javax.swing.JFrame {
 
         txtInventario.setColumns(20);
         txtInventario.setRows(5);
+        txtInventario.setFocusable(false);
         jScrollPane1.setViewportView(txtInventario);
 
         jLabel1.setText("CODIGO");
@@ -113,7 +113,7 @@ public class GUI extends javax.swing.JFrame {
                     .addComponent(txtTipoProd)
                     .addComponent(txtCodigo))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 479, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 652, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addGap(65, 65, 65)
@@ -167,6 +167,9 @@ public class GUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     //BOTON AGREGAR
+    //llama la funcion asignarValores para recoger los datos ingresados y almacenarlos temporalmente en variables
+    //llama la funcion agregarProducto que se encuentra en la clase Logica, la cual nos da la funcionalidad de agregar registros a la tabla HASH
+    //por ultimo llama la funcion mostrarValores, para reflejar los registros del Hash en el text Area y la funcion clean, para limpiar los campos
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         // TODO add your handling code here:
         try {
@@ -178,18 +181,23 @@ public class GUI extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Error");
         }
     }//GEN-LAST:event_btnAgregarActionPerformed
-
+    
+    //BOTON ELIMINAR    
+    //Nos solicita el codigo del registro a eliminar pro medio de un OptionPane 
+    //y llama la funcioneliminarProducto que se encuentra en la clase logica
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         // TODO add your handling code here:
-        String dato = JOptionPane.showInputDialog(this,"Ingrese el Codigo del Producto que Quiere Eliminar: ");
+        String id = JOptionPane.showInputDialog(this,"Ingrese el Codigo del Producto que Quiere Eliminar: ");
+        JOptionPane.showMessageDialog(this,logica.listaProductos.containsKey(id)? "Registro Eliminado":"Codigo No Encontrado");
         try {
-        logica.eliminarProducto(dato, logica.listaProductos);
+        logica.eliminarProducto(id, logica.listaProductos);
         mostrarInventario();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error");
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
-
+    
+    //limpia los inputs
     private void clean() {
         try {
             txtCodigo.setText("");
@@ -203,7 +211,8 @@ public class GUI extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Error");
         }
     }
-
+    
+    //recorre el hash por medio del ciclo while, y va imprimiendo los registos en el TextArea
     private void mostrarInventario() {
         try {
             String clave;
@@ -213,14 +222,21 @@ public class GUI extends javax.swing.JFrame {
                 clave = productos.next();
                 String nombreProducto = logica.listaProductos.get(clave).getProducto();
                 String tipoProd = logica.listaProductos.get(clave).getTipoProducto();
-                txtInventario.append(clave + " - " + nombreProducto + " - " + tipoProd);
+                double precio = logica.listaProductos.get(clave).getPrecioProducto();
+                String fabricante = logica.listaProductos.get(clave).getFabricanteProducto();
+                int existencias = logica.listaProductos.get(clave).getNumero();
+                String fechaIngreso = logica.listaProductos.get(clave).getFechaIngreso();
+                
+                txtInventario.append(clave+ " - " +nombreProducto+ " - Categoria: " +tipoProd+ " - Precio: Q" +precio+ 
+                        " - Fabricante: " +fabricante+ " - Existencias: " +existencias+ "- Fecha Ingreso: " +fechaIngreso);
                 txtInventario.append(System.getProperty("line.separator"));
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error");
         }
     }
-
+    
+    //Guarda los valores de los inputs en variables temporalmente
     public void asignarValores() {
         try {
             codigo = txtCodigo.getText();

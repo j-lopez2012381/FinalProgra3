@@ -16,6 +16,8 @@ public class Logica {
     
     HashMap <String, Producto> listaProductos = new HashMap <String, Producto>();
     
+    //Metodo para insertar cada registro en la tabla Hash, se usa el código de producto como identificador
+    //y un Objeto Producto para almacenar el resto de los datos requeridos
     public static void agregarProducto(String id, Producto producto, HashMap <String, Producto> listaProductos){
     if (listaProductos.containsKey(id)) {
         System.out.println("Error al ingresar producto, revise los datos y si el código está repetido.");
@@ -23,7 +25,7 @@ public class Logica {
         listaProductos.put(id, producto);               
     }
 }
-    
+    //Metodo eliminar, elimina un registro del inventario (Tabla Hash)
     public static void eliminarProducto(String id, HashMap<String, Producto> listaProductos) {
         if (listaProductos.containsKey(id)) {
             listaProductos.remove(id);
@@ -31,15 +33,4 @@ public class Logica {
             System.out.println("No hay ningun producto con ese código.");
         }
     }
-   
-    /*public static void mostrarInventario (HashMap<String, Producto> listaProductos) {
-        String clave;
-        Iterator<String> productos = listaProductos.keySet().iterator();
-        System.out.println("Hay los siguientes productos:");
-        while (productos.hasNext()) {
-            clave = productos.next();
-            System.out.println(clave + " - " + listaProductos.get(clave));
-        }
-    }*/
-    
 }
