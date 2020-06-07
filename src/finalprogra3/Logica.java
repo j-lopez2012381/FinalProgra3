@@ -6,8 +6,8 @@
 package finalprogra3;
 
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+//import java.util.Iterator;
+//import java.util.Map;
 /**
  *
  * @author Estuardo
@@ -18,13 +18,21 @@ public class Logica {
     
     public static void agregarProducto(String id, Producto producto, HashMap <String, Producto> listaProductos){
     if (listaProductos.containsKey(id)) {
-        System.out.println("No se puede introducir el producto. El código esta repetido.");
+        System.out.println("Error al ingresar producto, revise los datos y si el código está repetido.");
     } else {
         listaProductos.put(id, producto);               
     }
 }
+    
+    public static void eliminarProducto(String id, HashMap<String, Producto> listaProductos) {
+        if (listaProductos.containsKey(id)) {
+            listaProductos.remove(id);
+        } else {
+            System.out.println("No hay ningun producto con ese código.");
+        }
+    }
    
-    public static void mostrarInventario (HashMap<String, Producto> listaProductos) {
+    /*public static void mostrarInventario (HashMap<String, Producto> listaProductos) {
         String clave;
         Iterator<String> productos = listaProductos.keySet().iterator();
         System.out.println("Hay los siguientes productos:");
@@ -32,6 +40,6 @@ public class Logica {
             clave = productos.next();
             System.out.println(clave + " - " + listaProductos.get(clave));
         }
-    }
+    }*/
     
 }

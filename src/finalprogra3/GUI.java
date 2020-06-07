@@ -20,13 +20,11 @@ public class GUI extends javax.swing.JFrame {
     Logica logica = new Logica();
     String codigo;
     Producto producto;
-
-    /**
-     * Creates new form GUI
-     */
     public GUI() {
         initComponents();
+        this.setTitle("Estuardo Lopez 9941-18-10946 FINAL PROGRA 3");
     }
+   
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -54,6 +52,7 @@ public class GUI extends javax.swing.JFrame {
         txtExistencias = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         txtFechaIngreso = new javax.swing.JTextField();
+        btnEliminar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -81,6 +80,14 @@ public class GUI extends javax.swing.JFrame {
         jLabel6.setText("EXISTENCIAS");
 
         jLabel7.setText("FECHA INGRESO");
+
+        btnEliminar.setText("Eliminar Registro");
+        btnEliminar.setToolTipText("");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -111,6 +118,8 @@ public class GUI extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(65, 65, 65)
                 .addComponent(btnAgregar)
+                .addGap(43, 43, 43)
+                .addComponent(btnEliminar)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -148,7 +157,9 @@ public class GUI extends javax.swing.JFrame {
                             .addComponent(jLabel7)))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(35, 35, 35)
-                .addComponent(btnAgregar)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAgregar)
+                    .addComponent(btnEliminar))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -167,6 +178,17 @@ public class GUI extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Error");
         }
     }//GEN-LAST:event_btnAgregarActionPerformed
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        // TODO add your handling code here:
+        String dato = JOptionPane.showInputDialog(this,"Ingrese el Codigo del Producto que Quiere Eliminar: ");
+        try {
+        logica.eliminarProducto(dato, logica.listaProductos);
+        mostrarInventario();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error");
+        }
+    }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void clean() {
         try {
@@ -252,6 +274,7 @@ public class GUI extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
+    private javax.swing.JButton btnEliminar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

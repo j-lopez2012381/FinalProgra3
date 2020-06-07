@@ -10,7 +10,7 @@ package finalprogra3;
  * @author Estuardo
  */
 public class Producto {
-    
+
     int numero;
     String producto, tipoProducto, fabricanteProducto, fechaIngreso;
     double precioProducto;
@@ -71,7 +71,5 @@ public class Producto {
     public void setPrecioProducto(double precioProducto) {
         this.precioProducto = precioProducto;
     }
-    
-    
-    
+
 }
